@@ -49,6 +49,7 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
     }
 
     .app-shell {
@@ -62,13 +63,55 @@
       box-shadow: 0 0 32px rgba(28, 35, 64, 0.08);
     }
 
+    @media (min-width: 768px) {
+      body {
+        align-items: center;
+        padding: 32px 16px;
+      }
+      .app-shell {
+        max-width: 920px;
+        min-height: 88vh;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid var(--border-subtle);
+      }
+      .main-content {
+        padding: 24px 32px 40px 32px !important;
+      }
+      #screen-home.screen.active {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+        align-items: start;
+      }
+      .advisory-banner {
+        grid-column: 1 / -1;
+      }
+      .scanner-column {
+        grid-column: 1 / 2;
+      }
+      .sidebar-column {
+        grid-column: 2 / 3;
+      }
+      .bottom-nav {
+        max-width: 920px !important;
+        border-radius: 0 0 20px 20px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .app-shell {
+        max-width: 1080px;
+      }
+    }
+
     .top-bar {
       position: sticky;
       top: 0;
       z-index: 30;
       background: var(--paper);
       border-bottom: 1px solid var(--border-subtle);
-      padding: 12px 16px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -112,7 +155,7 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .lang-pill {
@@ -129,7 +172,7 @@
       border: none;
       background: transparent;
       color: var(--ink-muted);
-      padding: 4px 9px;
+      padding: 4px 10px;
       border-radius: 999px;
       cursor: pointer;
       font-family: inherit;
@@ -147,7 +190,7 @@
       color: var(--paper);
       border: none;
       border-radius: 999px;
-      padding: 6px 12px;
+      padding: 6px 14px;
       font-family: inherit;
       font-size: 0.78rem;
       font-weight: 700;
@@ -164,7 +207,7 @@
 
     .main-content {
       flex: 1;
-      padding: 16px 16px 104px 16px;
+      padding: 16px 16px 96px 16px;
       overflow-y: auto;
     }
 
@@ -187,7 +230,7 @@
       border: 1px solid #F5D47A;
       border-left: 4px solid #D98200;
       border-radius: var(--radius-md);
-      padding: 12px 14px;
+      padding: 14px 16px;
       margin-bottom: 16px;
     }
 
@@ -228,7 +271,7 @@
       background: var(--paper);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 16px;
+      padding: 18px;
       box-shadow: var(--shadow-sm);
       margin-bottom: 20px;
     }
@@ -254,7 +297,7 @@
 
     .ruled-textarea {
       width: 100%;
-      min-height: 132px;
+      min-height: 140px;
       padding: 12px;
       font-family: inherit;
       font-size: 1rem;
@@ -278,25 +321,9 @@
       border-color: var(--ballpen-blue);
     }
 
-    .attachment-preview {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg-surface);
-      border: 1px solid var(--pad-blue);
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin-top: 10px;
-      font-size: 0.85rem;
-    }
-
-    .attachment-preview.visible {
-      display: flex;
-    }
-
     .shortcut-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 8px;
       margin-top: 12px;
       margin-bottom: 14px;
@@ -306,16 +333,16 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
-      padding: 10px 12px;
+      padding: 10px 8px;
       font-family: inherit;
-      font-size: 0.86rem;
+      font-size: 0.82rem;
       font-weight: 700;
       color: var(--ink);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
       min-height: 44px;
       transition: background 0.15s, border-color 0.15s;
     }
@@ -475,7 +502,7 @@
       );
       border: 1.5px solid var(--pad-blue);
       border-radius: var(--radius-lg);
-      padding: 20px 18px;
+      padding: 22px 20px;
       box-shadow: var(--shadow-sm);
       margin-bottom: 16px;
     }
@@ -571,7 +598,7 @@
       background: var(--paper);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 16px;
+      padding: 18px;
       margin-bottom: 16px;
     }
 
@@ -627,7 +654,7 @@
       background: var(--paper);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 15px;
+      padding: 16px;
       margin-bottom: 12px;
     }
 
@@ -708,6 +735,14 @@
       grid-template-columns: repeat(4, 1fr);
       padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
       z-index: 40;
+    }
+
+    @media (min-width: 768px) {
+      .bottom-nav {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
     }
 
     .nav-item {
@@ -838,56 +873,49 @@
         </div>
       </div>
 
-      <div class="scanner-card">
-        <div class="scanner-label">
-          <span id="scannerTitle">Paste message, link, or number</span>
-          <span class="offline-badge" id="offlineBadge">Basic checks work offline</span>
+      <div class="scanner-column">
+        <div class="scanner-card">
+          <div class="scanner-label">
+            <span id="scannerTitle">Paste message, link, or number</span>
+            <span class="offline-badge" id="offlineBadge">Basic checks work offline</span>
+          </div>
+
+          <textarea
+            id="scamInput"
+            class="ruled-textarea"
+            placeholder="Paste suspicious SMS, Messenger message, URL, or 09XX phone number here..."
+            oninput="onInputChanged()"
+          ></textarea>
+
+          <div class="shortcut-grid">
+            <button class="chip-btn" onclick="pasteFromClipboard()">
+              <span id="chipPaste">Paste</span>
+            </button>
+            <button class="chip-btn" onclick="insertPrefix()">
+              <span id="chipLink">Link / Number</span>
+            </button>
+            <button class="chip-btn" onclick="cycleSample()">
+              <span id="chipSample">Try Sample</span>
+            </button>
+          </div>
+
+          <button id="checkNowBtn" class="primary-check-btn" onclick="runCheck()">
+            <span id="checkBtnLabel">Paste text to check</span>
+          </button>
+
+          <p class="privacy-note" id="privacyNote">
+            Privacy-first: OTPs, card numbers, and account balances are automatically masked on your device.
+          </p>
         </div>
-
-        <textarea
-          id="scamInput"
-          class="ruled-textarea"
-          placeholder="Paste suspicious SMS, Messenger message, URL, or 09XX phone number here..."
-          oninput="onInputChanged()"
-        ></textarea>
-
-        <input type="file" id="screenshotInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleScreenshotUpload(event)" />
-
-        <div id="attachmentPreview" class="attachment-preview">
-          <span id="attachmentName">Screenshot attached</span>
-          <button class="text-link-btn" style="color:var(--checker-red)" onclick="clearAttachment()">Remove</button>
-        </div>
-
-        <div class="shortcut-grid">
-          <button class="chip-btn" onclick="document.getElementById('screenshotInput').click()">
-            <span id="chipScreenshot">Screenshot</span>
-          </button>
-          <button class="chip-btn" onclick="pasteFromClipboard()">
-            <span id="chipPaste">Paste</span>
-          </button>
-          <button class="chip-btn" onclick="insertPrefix()">
-            <span id="chipLink">Link / Number</span>
-          </button>
-          <button class="chip-btn" onclick="cycleSample()">
-            <span id="chipSample">Try Sample</span>
-          </button>
-        </div>
-
-        <button id="checkNowBtn" class="primary-check-btn" onclick="runCheck()">
-          <span id="checkBtnLabel">Paste or attach to check</span>
-        </button>
-
-        <p class="privacy-note" id="privacyNote">
-          Privacy-first: OTPs, card numbers, and account balances are automatically masked on your device.
-        </p>
       </div>
 
-      <div class="section-title-row">
-        <h2 class="section-title" id="recentHeading">Recent checks</h2>
-        <button class="text-link-btn" onclick="switchTab('history')" id="viewHistoryLink">View all</button>
+      <div class="sidebar-column">
+        <div class="section-title-row">
+          <h2 class="section-title" id="recentHeading">Recent checks</h2>
+          <button class="text-link-btn" onclick="switchTab('history')" id="viewHistoryLink">View all</button>
+        </div>
+        <div id="homeRecentContainer"></div>
       </div>
-
-      <div id="homeRecentContainer"></div>
     </section>
 
     <section id="screen-result" class="screen">
@@ -979,7 +1007,7 @@
 
       <div style="margin-bottom:12px;">
         <h3 class="section-title" id="hotlinesTitle">Official emergency hotlines</h3>
-        <p style="font-size:0.8rem; color:var(--ink-muted); margin-top:2px;" id="hotlinesVerifiedNote">
+        <p style="font-size:0.80rem; color:var(--ink-muted); margin-top:2px;" id="hotlinesVerifiedNote">
           Source: official websites, checked Oct 2026
         </p>
       </div>
@@ -1032,7 +1060,6 @@
 <script>
   let currentLang = 'en';
   let sampleIndex = 0;
-  let attachedImageName = null;
   let lastCheckResult = null;
   let currentAlertSort = 'newest';
   let onboardingStep = 0;
@@ -1168,7 +1195,7 @@
     'landbank.com', 'shopee.ph', 'lazada.com.ph', 'jtexpress.ph', 'lbcexpress.com', 'gov.ph'
   ];
 
-  function analyzeScamContent(rawInput, hasScreenshot) {
+  function analyzeScamContent(rawInput) {
     const text = rawInput.trim();
     const flags = [];
     let score = 0;
@@ -1257,13 +1284,48 @@
       });
     }
 
-    if (hasScreenshot && flags.length === 0) {
-      score += 30;
+    const moneyTransferRegex = /\b(padala|pasa|send|transfer|gcash|maya|pwedeng pautang|paki-transfer)\b/i;
+    const indirectAskRegex = /\b(emergency|ospital|pambili ng gamot|kailangan ko ngayon|tulungan niyo po ako)\b/i;
+    if (moneyTransferRegex.test(text) && indirectAskRegex.test(text)) {
+      score += 50;
       flags.push({
-        phrase: attachedImageName || 'Screenshot',
+        phrase: 'Emergency money request',
         severity: 'warning',
-        en: 'Screenshots of GCash/bank receipts can be easily edited. Always check your own in-app transaction history.',
-        tl: 'Madaling i-edit ang screenshot ng resibo. Laging tingnan ang transaction history sa sarili mong app.'
+        en: 'Emotional manipulation framing an emergency to trick you into sending funds.',
+        tl: 'Pumupukaw ng emosyon (emergency) para madali kang mapagpadala ng pera.'
+      });
+    }
+
+    const impersonateRegex = /\b(ako 'to|si [a-z]+ 'to|bagong number ko|new number ko|boss|manager|sir [a-z]+)\b/i;
+    if (impersonateRegex.test(text) && moneyTransferRegex.test(text)) {
+      score += 60;
+      flags.push({
+        phrase: 'Impersonation pattern',
+        severity: 'critical',
+        en: 'Pretending to be a relative or boss using a "new number" to ask for money.',
+        tl: 'Nagpapanggap na kamag-anak o boss na may "bagong numero" para manghingi ng tulong.'
+      });
+    }
+
+    const rawDomainRegex = /\b[a-zA-Z0-9-]+\.(com|ph|net|org|xyz|top|click|co|me)\/[a-zA-Z0-9-_/?=]+\b/i;
+    if (rawDomainRegex.test(text)) {
+      score += 45;
+      flags.push({
+        phrase: 'Raw link without prefix',
+        severity: 'critical',
+        en: 'Contains an unformatted web link designed to bypass basic filters.',
+        tl: 'May kasamang direktang link na ginawa para maiwasan ang mga filter.'
+      });
+    }
+
+    const investmentRegex = /\b(double your money|doble ang kita|tubo sa puhunan|payout|investment|crypto|binary)\b/i;
+    if (investmentRegex.test(text)) {
+      score += 55;
+      flags.push({
+        phrase: 'Too-good-to-be-true investment',
+        severity: 'critical',
+        en: 'Promises unrealistic high returns with zero risk.',
+        tl: 'Nangangako ng mabilis at sobrang laking tubo na walang panganib.'
       });
     }
 
@@ -1271,15 +1333,15 @@
     score = Math.min(99, score);
 
     let tier = 'clean';
-    if (score >= 65 || criticalOverride) tier = 'high';
-    else if (score >= 25) tier = 'suspicious';
+    if (score >= 40 || criticalOverride) tier = 'high';
+    else if (score >= 10) tier = 'suspicious';
 
     return {
       tier,
       score: tier === 'clean' ? 92 : Math.max(78, score),
       flags,
-      rawText: text || `[Screenshot: ${attachedImageName}]`,
-      sanitizedText: sanitizeSensitiveData(text || `[Screenshot: ${attachedImageName}]`),
+      rawText: text,
+      sanitizedText: sanitizeSensitiveData(text),
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
   }
@@ -1288,8 +1350,8 @@
     const inputEl = document.getElementById('scamInput');
     const raw = inputEl.value.trim();
 
-    if (!raw && !attachedImageName) {
-      showToast(currentLang === 'en' ? 'Paste a message or attach a screenshot first.' : 'Mag-paste muna ng mensahe o screenshot.');
+    if (!raw) {
+      showToast(currentLang === 'en' ? 'Paste a message or link first.' : 'Mag-paste muna ng mensahe o link.');
       inputEl.focus();
       return;
     }
@@ -1299,7 +1361,7 @@
       return;
     }
 
-    const result = analyzeScamContent(raw, Boolean(attachedImageName));
+    const result = analyzeScamContent(raw);
     lastCheckResult = result;
     saveCheckToHistory(result);
     renderResultScreen(result);
@@ -1384,7 +1446,7 @@
     const actions = res.tier === 'high'
       ? (currentLang === 'en'
           ? ['Do not click any link or reply to the sender.', 'Never enter your OTP, MPIN, or password.', 'Block the number and report it below to protect others.']
-          : ['Huwag i-click ang link at huwag mag-reply.', 'Huwag na huwag ibibigay ang iyong OTP o MPIN.', 'I-block ang numero at i-report ito sa ibaba.'])
+          : ['Huwag i-click ang link at huwag mag-reply.', 'Huwag na huwag ibigay ang iyong OTP o MPIN.', 'I-block ang numero at i-report ito sa ibaba.'])
       : (currentLang === 'en'
           ? ['Open your official GCash, Maya, or bank app directly — do not use links in texts.', 'If someone claims a "wrong send," ask them to coordinate with GCash support (2882) so you aren’t used as a money mule.', 'When in doubt, call the official hotline on the SOS tab.']
           : ['Buksan nang direkta ang opisyal na GCash, Maya, o bank app.', 'Kung "wrong send" daw, sabihing makipag-ugnayan sa GCash 2882 para ligtas.', 'Kung nagdududa, tumawag sa opisyal na hotline sa SOS tab.']);
@@ -1542,7 +1604,7 @@
   }
 
   function onInputChanged() {
-    const hasInput = document.getElementById('scamInput').value.trim().length > 0 || Boolean(attachedImageName);
+    const hasInput = document.getElementById('scamInput').value.trim().length > 0;
     const btn = document.getElementById('checkNowBtn');
     const lbl = document.getElementById('checkBtnLabel');
     if (hasInput) {
@@ -1550,7 +1612,7 @@
       lbl.textContent = currentLang === 'en' ? 'Check Now' : 'Suriin Ngayon';
     } else {
       btn.classList.remove('ready');
-      lbl.textContent = currentLang === 'en' ? 'Paste or attach to check' : 'Mag-paste o maglakip para suriin';
+      lbl.textContent = currentLang === 'en' ? 'Paste text to check' : 'Mag-paste ng mensahe para suriin';
     }
   }
 
@@ -1589,34 +1651,6 @@
   function loadSampleScam(idx) {
     switchTab('home');
     document.getElementById('scamInput').value = SAMPLE_MESSAGES[idx];
-    onInputChanged();
-  }
-
-  function handleScreenshotUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    if (!validTypes.includes(file.type)) {
-      showToast('Only JPG, PNG, or WebP screenshots are allowed.');
-      return;
-    }
-    if (file.size > 8 * 1024 * 1024) {
-      showToast('Screenshot must be under 8 MB.');
-      return;
-    }
-    attachedImageName = file.name;
-    document.getElementById('attachmentName').textContent = `Screenshot: ${file.name}`;
-    document.getElementById('attachmentPreview').classList.add('visible');
-    if (!document.getElementById('scamInput').value.trim()) {
-      document.getElementById('scamInput').value = `[Screenshot OCR] Congrats! You won Php 5,000. Click bit.ly/claim-now within 24 hours and enter your OTP.`;
-    }
-    onInputChanged();
-  }
-
-  function clearAttachment() {
-    attachedImageName = null;
-    document.getElementById('screenshotInput').value = '';
-    document.getElementById('attachmentPreview').classList.remove('visible');
     onInputChanged();
   }
 
