@@ -642,92 +642,6 @@
       border-top: 1px solid var(--bg-surface);
     }
 
-    .emergency-prompt-card {
-      background: var(--checker-red-bg);
-      border: 1.5px solid var(--checker-red);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .emergency-prompt-card strong {
-      color: var(--checker-red);
-      font-size: 0.92rem;
-      display: block;
-    }
-
-    .chat-box {
-      background: var(--paper);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      min-height: 290px;
-      max-height: 380px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .chat-msg {
-      max-width: 88%;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 0.92rem;
-      line-height: 1.45;
-    }
-
-    .chat-msg.bot {
-      background: var(--bg-surface);
-      color: var(--ink);
-      align-self: flex-start;
-      border-bottom-left-radius: 3px;
-    }
-
-    .chat-msg.user {
-      background: var(--ballpen-blue);
-      color: var(--paper);
-      align-self: flex-end;
-      border-bottom-right-radius: 3px;
-    }
-
-    .chat-input-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .chat-input {
-      flex: 1;
-      padding: 12px;
-      border: 1.5px solid var(--pad-blue);
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    .chat-send-btn {
-      background: var(--disabled-btn);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 10px;
-      padding: 0 18px;
-      font-family: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      min-height: 46px;
-    }
-
-    .chat-send-btn.ready {
-      background: var(--ballpen-blue);
-    }
-
     .sos-banner {
       background: var(--checker-red);
       color: var(--paper);
@@ -791,7 +705,7 @@
       background: var(--paper);
       border-top: 1px solid var(--border-subtle);
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
       z-index: 40;
     }
@@ -1035,44 +949,6 @@
       <div id="alertsListContainer"></div>
     </section>
 
-    <section id="screen-chat" class="screen">
-      <div class="section-title-row">
-        <h2 class="section-title" id="chatTitle">Tsek AI Scam Assistant</h2>
-      </div>
-
-      <div class="emergency-prompt-card" onclick="triggerOtpEmergencyChecklist()">
-        <div>
-          <strong id="urgentOtpTitle">URGENT: "I gave my OTP 19 minutes ago"</strong>
-          <span style="font-size:0.8rem; color:var(--ink);" id="urgentOtpSub">Tap for immediate freeze checklist &amp; hotlines</span>
-        </div>
-        <span style="font-weight:700; color:var(--checker-red);">&rarr;</span>
-      </div>
-
-      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">
-        <button class="copy-btn" style="font-size:0.78rem; padding:6px 10px;" onclick="sendQuickChat('How do I check if a GCash text is legit?')">Verify GCash SMS</button>
-        <button class="copy-btn" style="font-size:0.78rem; padding:6px 10px;" onclick="sendQuickChat('Someone offered me P500/day to like TikTok videos on Telegram')">Telegram task job</button>
-        <button class="copy-btn" style="font-size:0.78rem; padding:6px 10px;" onclick="sendQuickChat('Someone sent GCash by mistake and wants me to send it back')">"Wrong send" modus</button>
-      </div>
-
-      <div class="chat-box" id="chatMessages"></div>
-
-      <div class="chat-input-row">
-        <input
-          type="text"
-          id="chatInput"
-          class="chat-input"
-          placeholder="Ask about a suspicious message or modus..."
-          oninput="onChatInputChanged()"
-          onkeydown="if(event.key==='Enter') sendChatMessage()"
-        />
-        <button id="chatSendBtn" class="chat-send-btn" onclick="sendChatMessage()">Send</button>
-      </div>
-
-      <p class="privacy-note" id="chatDisclaimer">
-        AI can make mistakes. If you already sent money or shared an OTP, tap <strong>SOS 1326</strong> immediately.
-      </p>
-    </section>
-
     <section id="screen-history" class="screen">
       <div class="section-title-row">
         <h2 class="section-title" id="historyTitle">Saved scan history</h2>
@@ -1121,10 +997,6 @@
     <button class="nav-item" id="nav-alerts" onclick="switchTab('alerts')">
       <span>&#128227;</span>
       <span id="navAlertsLabel">Alerts</span>
-    </button>
-    <button class="nav-item" id="nav-chat" onclick="switchTab('chat')">
-      <span>&#128172;</span>
-      <span id="navChatLabel">Tsek AI</span>
     </button>
     <button class="nav-item" id="nav-history" onclick="switchTab('history')">
       <span>&#128211;</span>
@@ -1520,97 +1392,6 @@
     stepsEl.innerHTML = actions.map(a => `<li>${escapeHtml(a)}</li>`).join('');
   }
 
-  function initChat() {
-    const box = document.getElementById('chatMessages');
-    if (box.children.length > 0) return;
-    appendChatBubble('bot', currentLang === 'en'
-      ? 'Hello! Paste any suspicious text, job offer, or delivery notice here, or tap the red emergency card above if you already shared an OTP.'
-      : 'Kumusta! I-paste dito ang anumang kahina-hinalang text, alok na trabaho, o delivery message, o pindutin ang pulang card sa itaas kung naibigay mo na ang iyong OTP.');
-  }
-
-  function triggerOtpEmergencyChecklist() {
-    switchTab('chat');
-    appendChatBubble('user', currentLang === 'en'
-      ? 'I gave my OTP 19 minutes ago, what should I do right now?'
-      : 'Naibigay ko ang OTP ko 19 minuto na ang nakalipas, ano ang dapat kong gawin ngayon?');
-
-    const checklistHtml = currentLang === 'en'
-      ? `<strong>IMMEDIATE EMERGENCY CHECKLIST (DO THIS IN ORDER):</strong><br/><br/>
-         1. <strong>Freeze your wallet/bank NOW:</strong> Call GCash (<strong>2882</strong>), Maya (<strong>*788</strong>), BDO (<strong>8631-8000</strong>), or BPI (<strong>889-10000</strong>) to lock outgoing transfers.<br/>
-         2. <strong>Change your MPIN/Password:</strong> Open your official app and unlink any unknown registered devices.<br/>
-         3. <strong>Call CICC 1326:</strong> Report the transaction reference ID immediately for inter-bank tracing.<br/><br/>
-         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
-           <a href="tel:1326" class="call-btn" style="padding:6px 10px; font-size:0.8rem;">Call CICC 1326</a>
-           <a href="tel:2882" class="call-btn" style="padding:6px 10px; font-size:0.8rem; background:#243C8F;">Call GCash 2882</a>
-           <button onclick="switchTab('sos')" class="copy-btn" style="padding:6px 10px; font-size:0.8rem;">Open SOS Directory</button>
-         </div>`
-      : `<strong>AGARANG HAKBANG (GAWIN ITO NANG SUNOD-SUNOD):</strong><br/><br/>
-         1. <strong>I-freeze agad ang iyong e-wallet o bangko:</strong> Tumawag sa GCash (<strong>2882</strong>), Maya (<strong>*788</strong>), BDO (<strong>8631-8000</strong>), o BPI (<strong>889-10000</strong>).<br/>
-         2. <strong>Palitan ang MPIN at Password:</strong> Buksan ang opisyal na app at alisin ang mga naka-link na device.<br/>
-         3. <strong>Tumawag sa CICC 1326:</strong> Ibigay ang reference number para ma-trace agad.<br/><br/>
-         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
-           <a href="tel:1326" class="call-btn" style="padding:6px 10px; font-size:0.8rem;">Tawagan: 1326</a>
-           <a href="tel:2882" class="call-btn" style="padding:6px 10px; font-size:0.8rem; background:#243C8F;">GCash: 2882</a>
-           <button onclick="switchTab('sos')" class="copy-btn" style="padding:6px 10px; font-size:0.8rem;">Buksan ang SOS</button>
-         </div>`;
-
-    appendChatBubble('bot', checklistHtml, true);
-  }
-
-  function sendQuickChat(promptText) {
-    document.getElementById('chatInput').value = promptText;
-    onChatInputChanged();
-    sendChatMessage();
-  }
-
-  function sendChatMessage() {
-    const input = document.getElementById('chatInput');
-    const msg = input.value.trim();
-    if (!msg) return;
-    input.value = '';
-    onChatInputChanged();
-
-    if (/\b(gave my otp|sent my otp|shared my otp|naibigay ko ang otp|na-scam na ako)\b/i.test(msg)) {
-      triggerOtpEmergencyChecklist();
-      return;
-    }
-
-    appendChatBubble('user', msg);
-
-    const lower = msg.toLowerCase();
-    let reply = '';
-    if (lower.includes('gcash') || lower.includes('maya') || lower.includes('sms')) {
-      reply = currentLang === 'en'
-        ? 'Official BSP & CICC rule: GCash, Maya, and Philippine banks NEVER send clickable links in SMS or ask for your 6-digit OTP/MPIN. Even if the message appears inside the real "GCash" SMS thread, scammers use fake cell towers (IMSI catchers) to spoof the sender name. Delete it and check your official app directly.'
-        : 'Tandaan: Kailanman ay HINDI nagpapadala ng link sa text ang GCash, Maya, o mga bangko, at hindi nila hihingin ang iyong OTP o MPIN. Kahit lumabas ito sa mismong thread ng GCash, kaya itong gayahin ng scammers gamit ang illegal text blaster.';
-    } else if (lower.includes('telegram') || lower.includes('task') || lower.includes('like') || lower.includes('job')) {
-      reply = currentLang === 'en'
-        ? 'That is a classic "Task / Prepayment Scam." Scammers pay you P100–P300 at first for liking TikTok or Shopee items to build trust, then require you to send P3,000+ to unlock a "VIP task." Once you send money, they block you. Never pay money to get a job.'
-        : 'Iyan ay kilalang "Task Scam." Babayaran ka muna ng P100–P300 sa pag-like ng video para magtiwala ka, tapos hihingan ka ng P3,000+ na deposito. Huwag maglalabas ng pera para lang sa online na trabaho.';
-    } else if (lower.includes('wrong send') || lower.includes('mistake')) {
-      reply = currentLang === 'en'
-        ? 'Be careful with "wrong send" requests. First, open your own GCash app and check your official Transaction History (never trust an SMS alone, as scammers send fake cash-in texts). Second, if money really arrived, scammers sometimes use innocent accounts as "money mules" to launder stolen funds. Ask them to file a ticket with GCash 2882 to reverse it officially.'
-        : 'Mag-ingat sa "wrong send" modus. Una, buksan ang sarili mong GCash app at tingnan ang Transaction History (huwag maniwala sa text lang). Pangalawa, kung may pumasok ngang pera, maaaring galing ito sa nakaw at ginagawa kang "money mule." Sabihan silang itawag sa GCash 2882.';
-    } else {
-      const scan = analyzeScamContent(msg, false);
-      reply = currentLang === 'en'
-        ? `I ran a quick scan on that message: Verdict is "${scan.tier === 'high' ? 'Likely a Scam' : scan.tier === 'suspicious' ? 'Suspicious' : 'No obvious red flags (not a guarantee)'}". Paste it on the Home tab for a full line-by-line breakdown.`
-        : `Sinuri ko ang mensaheng iyan: "${scan.tier === 'high' ? 'Malamang Scam' : scan.tier === 'suspicious' ? 'Kahina-hinala' : 'Walang nakitang red flag (hindi garantiya)'}". I-paste ito sa Home tab para sa buong paliwanag.`;
-    }
-
-    setTimeout(() => appendChatBubble('bot', reply), 180);
-  }
-
-  function appendChatBubble(role, content, isHtml = false) {
-    const box = document.getElementById('chatMessages');
-    const div = document.createElement('div');
-    div.className = `chat-msg ${role}`;
-    if (isHtml) div.innerHTML = content;
-    else div.textContent = content;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-  }
-
   function renderAlerts() {
     const container = document.getElementById('alertsListContainer');
     const list = [...VERIFIED_ALERTS].sort((a, b) =>
@@ -1773,11 +1554,6 @@
     }
   }
 
-  function onChatInputChanged() {
-    const hasText = document.getElementById('chatInput').value.trim().length > 0;
-    document.getElementById('chatSendBtn').classList.toggle('ready', hasText);
-  }
-
   async function pasteFromClipboard() {
     try {
       const clip = await navigator.clipboard.readText();
@@ -1899,7 +1675,6 @@
     const navBtn = document.getElementById(`nav-${tabId === 'result' ? 'home' : tabId}`);
     if (navBtn) navBtn.classList.add('active');
 
-    if (tabId === 'chat') initChat();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
