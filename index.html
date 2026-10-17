@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="theme-color" content="#1C2340" />
+  <title>Tsėk — Philippine Scam Checker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #FFFFFF;
+      --bg-surface: #F4F7FB;
+      --pad-blue: #D5E1F2;
+      --ink: #1C2340;
+      --ink-muted: #52607A;
+      --checker-red: #D1352B;
+      --checker-red-bg: #FDF2F2;
+      --highlighter: #FFE066;
+      --amber-text: #8A5300;
+      --amber-bg: #FFF9E6;
+      --pass-green: #2E7D4F;
+      --pass-green-bg: #EDF7F1;
+      --ballpen-blue: #243C8F;
+      --royal-dot: #1E88E5;
+      --disabled-btn: #6B8DB5;
+      --border-subtle: #DCE4F0;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 2px 8px rgba(28, 35, 64, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Atkinson Hyperlegible', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-surface);
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background-color: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 32px rgba(28, 35, 64, 0.08);
+    }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .wordmark {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      display: inline-flex;
+      align-items: baseline;
+      position: relative;
+    }
+
+    .wordmark-e {
+      position: relative;
+      display: inline-block;
+    }
+
+    .wordmark-e::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background-color: var(--royal-dot);
+      border-radius: 50%;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-pill {
+      display: inline-flex;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 2px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      padding: 4px 9px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.76rem;
+    }
+
+    .lang-btn.active {
+      background: var(--ballpen-blue);
+      color: var(--paper);
+    }
+
+    .sos-header-btn {
+      background: var(--checker-red);
+      color: var(--paper);
+      border: none;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .sos-header-btn:hover {
+      opacity: 0.92;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 16px 16px 104px 16px;
+      overflow-y: auto;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.16s ease-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .advisory-banner {
+      background: var(--amber-bg);
+      border: 1px solid #F5D47A;
+      border-left: 4px solid #D98200;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+
+    .advisory-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--amber-text);
+      margin-bottom: 4px;
+    }
+
+    .advisory-text {
+      font-size: 0.88rem;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .advisory-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .text-link-btn {
+      background: none;
+      border: none;
+      color: var(--ballpen-blue);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 2px 0;
+    }
+
+    .scanner-card {
+      background: var(--paper);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+
+    .scanner-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .offline-badge {
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--pass-green);
+      background: var(--pass-green-bg);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .ruled-textarea {
+      width: 100%;
+      min-height: 132px;
+      padding: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 27px,
+        var(--pad-blue) 28px
+      );
+      line-height: 28px;
+      border: 1.5px solid var(--pad-blue);
+      border-radius: var(--radius-md);
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .ruled-textarea:focus {
+      border-color: var(--ballpen-blue);
+    }
+
+    .attachment-preview {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
+      border: 1px solid var(--pad-blue);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 10px;
+      font-size: 0.85rem;
+    }
+
+    .attachment-preview.visible {
+      display: flex;
+    }
+
+    .shortcut-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      margin-bottom: 14px;
+    }
+
+    .chip-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 44px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .chip-btn:hover {
+      background: #E8EEF7;
+      border-color: var(--ballpen-blue);
+    }
+
+    .primary-check-btn {
+      width: 100%;
+      min-height: 50px;
+      border: none;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      background-color: var(--disabled-btn);
+      cursor: pointer;
+      transition: background-color 0.18s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .primary-check-btn.ready {
+      background-color: var(--ballpen-blue);
+      box-shadow: 0 4px 12px rgba(36, 60, 143, 0.25);
+    }
+
+    .primary-check-btn.ready:active {
+      transform: scale(0.99);
+    }
+
+    .privacy-note {
+      font-size: 0.76rem;
+      color: var(--ink-muted);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .golden-rules-card {
+      background: var(--paper);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .rule-item {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .rule-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--ballpen-blue);
+      color: var(--paper);
+      font-weight: 700;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .history-card {
+      background: var(--paper);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .history-card:hover {
+      border-color: var(--ballpen-blue);
+    }
+
+    .history-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .badge.high {
+      background: var(--checker-red-bg);
+      color: var(--checker-red);
+      border: 1px solid #F5C2C0;
+    }
+
+    .badge.suspicious {
+      background: var(--amber-bg);
+      color: var(--amber-text);
+      border: 1px solid #F5D47A;
+    }
+
+    .badge.clean {
+      background: var(--pass-green-bg);
+      color: var(--pass-green);
+      border: 1px solid #B7E1C7;
+    }
+
+    .snippet {
+      font-size: 0.9rem;
+      color: var(--ink);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .graded-sheet {
+      background-color: var(--paper);
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 31px,
+        var(--pad-blue) 32px
+      );
+      border: 1.5px solid var(--pad-blue);
+      border-radius: var(--radius-lg);
+      padding: 20px 18px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+    }
+
+    .verdict-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .verdict-sentence {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .verdict-sentence.high { color: var(--checker-red); }
+    .verdict-sentence.suspicious { color: var(--amber-text); }
+    .verdict-sentence.clean { color: var(--pass-green); }
+
+    .verdict-sub {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    .hand-mark path {
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+      animation: drawStroke 0.55s ease-out forwards;
+    }
+
+    @keyframes drawStroke {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .marked-quote {
+      font-size: 1.04rem;
+      line-height: 32px;
+      color: var(--ink);
+      padding: 8px 0;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .flag-critical {
+      text-decoration: underline wavy var(--checker-red) 2px;
+      background: rgba(209, 53, 43, 0.08);
+      padding: 0 2px;
+      font-weight: 700;
+    }
+
+    .flag-warning {
+      background: var(--highlighter);
+      border-bottom: 2px dashed var(--amber-text);
+      padding: 0 2px;
+    }
+
+    .flag-sup {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--checker-red);
+      margin-left: 2px;
+    }
+
+    .footnotes-list {
+      border-top: 1px solid var(--pad-blue);
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.92rem;
+    }
+
+    .footnote-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .footnote-index {
+      font-weight: 700;
+      color: var(--checker-red);
+      min-width: 18px;
+    }
+
+    .action-plan-card {
+      background: var(--paper);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .action-steps {
+      margin-top: 10px;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    .result-cta-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn-outline {
+      background: var(--paper);
+      border: 1.5px solid var(--ballpen-blue);
+      color: var(--ballpen-blue);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 46px;
+    }
+
+    .btn-danger {
+      background: var(--checker-red);
+      border: none;
+      color: var(--paper);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 46px;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .alert-card {
+      background: var(--paper);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .alert-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--bg-surface);
+    }
+
+    .emergency-prompt-card {
+      background: var(--checker-red-bg);
+      border: 1.5px solid var(--checker-red);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .emergency-prompt-card strong {
+      color: var(--checker-red);
+      font-size: 0.92rem;
+      display: block;
+    }
+
+    .chat-box {
+      background: var(--paper);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      min-height: 290px;
+      max-height: 380px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .chat-msg {
+      max-width: 88%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .chat-msg.bot {
+      background: var(--bg-surface);
+      color: var(--ink);
+      align-self: flex-start;
+      border-bottom-left-radius: 3px;
+    }
+
+    .chat-msg.user {
+      background: var(--ballpen-blue);
+      color: var(--paper);
+      align-self: flex-end;
+      border-bottom-right-radius: 3px;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px;
+      border: 1.5px solid var(--pad-blue);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .chat-send-btn {
+      background: var(--disabled-btn);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 10px;
+      padding: 0 18px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 46px;
+    }
+
+    .chat-send-btn.ready {
+      background: var(--ballpen-blue);
+    }
+
+    .sos-banner {
+      background: var(--checker-red);
+      color: var(--paper);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .hotline-card {
+      background: var(--paper);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hotline-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+    }
+
+    .hotline-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .call-btn {
+      flex: 1;
+      background: var(--pass-green);
+      color: var(--paper);
+      text-decoration: none;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .copy-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      background: var(--paper);
+      border-top: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+      z-index: 40;
+    }
+
+    .nav-item {
+      background: none;
+      border: none;
+      font-family: inherit;
+      color: var(--ink-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 6px 2px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .nav-item.active {
+      color: var(--ballpen-blue);
+    }
+
+    .nav-item.sos-tab.active {
+      color: var(--checker-red);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(28, 35, 64, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .onboarding-card {
+      background: var(--paper);
+      width: 100%;
+      max-width: 420px;
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .dots-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 16px 0;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--pad-blue);
+      transition: width 0.2s, background 0.2s;
+    }
+
+    .dot.active {
+      width: 24px;
+      background: var(--ballpen-blue);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 78px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ink);
+      color: var(--paper);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      z-index: 90;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+  <header class="top-bar">
+    <div class="brand-row" onclick="switchTab('home')" title="Tsėk Home">
+      <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M32 6L10 15V31C10 45.2 19.4 57.6 32 61C44.6 57.6 54 45.2 54 31V15L32 6Z" fill="#F4F7FB" stroke="#1C2340" stroke-width="4" stroke-linejoin="round"/>
+        <circle cx="30" cy="30" r="12" fill="#FFFFFF" stroke="#243C8F" stroke-width="4"/>
+        <path d="M39 39L48 48" stroke="#1C2340" stroke-width="4.5" stroke-linecap="round"/>
+        <path d="M25 30.5L28.8 34.2L36 26.5" stroke="#2E7D4F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="32" cy="14" r="3" fill="#1E88E5"/>
+      </svg>
+      <span class="wordmark">Ts<span class="wordmark-e">e</span>k</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="text-link-btn" style="font-size:0.75rem; margin-right:4px;" onclick="openOnboarding()" id="tourBtn">Intro</button>
+      <div class="lang-pill" role="group" aria-label="Language switch">
+        <button class="lang-btn active" id="langEn" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" id="langTl" onclick="setLanguage('tl')">Taglish</button>
+      </div>
+      <button class="sos-header-btn" onclick="switchTab('sos')">SOS 1326</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <section id="screen-home" class="screen active">
+      <div class="advisory-banner">
+        <div class="advisory-header">
+          <span id="advBadge">ACTIVE PH THREAT ADVISORY</span>
+          <span>CICC / BSP</span>
+        </div>
+        <p class="advisory-text" id="advText">
+          Fake "GCash/Maya account suspended" SMS with bit.ly or .xyz links asking for your 6-digit OTP are circulating today.
+        </p>
+        <div class="advisory-actions">
+          <button class="text-link-btn" onclick="loadSampleScam(0)" id="advTryBtn">Test sample in checker</button>
+          <button class="text-link-btn" onclick="switchTab('alerts')" id="advViewAllBtn">See all advisories</button>
+        </div>
+      </div>
+
+      <div class="scanner-card">
+        <div class="scanner-label">
+          <span id="scannerTitle">Paste message, link, or number</span>
+          <span class="offline-badge" id="offlineBadge">Basic checks work offline</span>
+        </div>
+
+        <textarea
+          id="scamInput"
+          class="ruled-textarea"
+          placeholder="Paste suspicious SMS, Messenger message, URL, or 09XX phone number here..."
+          oninput="onInputChanged()"
+        ></textarea>
+
+        <input type="file" id="screenshotInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleScreenshotUpload(event)" />
+
+        <div id="attachmentPreview" class="attachment-preview">
+          <span id="attachmentName">Screenshot attached</span>
+          <button class="text-link-btn" style="color:var(--checker-red)" onclick="clearAttachment()">Remove</button>
+        </div>
+
+        <div class="shortcut-grid">
+          <button class="chip-btn" onclick="document.getElementById('screenshotInput').click()">
+            <span id="chipScreenshot">Screenshot</span>
+          </button>
+          <button class="chip-btn" onclick="pasteFromClipboard()">
+            <span id="chipPaste">Paste</span>
+          </button>
+          <button class="chip-btn" onclick="insertPrefix()">
+            <span id="chipLink">Link / Number</span>
+          </button>
+          <button class="chip-btn" onclick="cycleSample()">
+            <span id="chipSample">Try Sample</span>
+          </button>
+        </div>
+
+        <button id="checkNowBtn" class="primary-check-btn" onclick="runCheck()">
+          <span id="checkBtnLabel">Paste or attach to check</span>
+        </button>
+
+        <p class="privacy-note" id="privacyNote">
+          Privacy-first: OTPs, card numbers, and account balances are automatically masked on your device.
+        </p>
+      </div>
+
+      <div class="section-title-row">
+        <h2 class="section-title" id="recentHeading">Recent checks</h2>
+        <button class="text-link-btn" onclick="switchTab('history')" id="viewHistoryLink">View all</button>
+      </div>
+
+      <div id="homeRecentContainer"></div>
+    </section>
+
+    <section id="screen-result" class="screen">
+      <div style="margin-bottom:12px;">
+        <button class="text-link-btn" onclick="switchTab('home')" id="backToScannerBtn">&larr; Check another message</button>
+      </div>
+
+      <div class="graded-sheet" id="gradedSheet">
+        <div class="verdict-header">
+          <div>
+            <div class="verdict-sentence" id="verdictTitle">High risk — likely a scam.</div>
+            <div class="verdict-sub" id="verdictSubtitle">3 red flags found · 96% confidence</div>
+          </div>
+          <div id="verdictMarkContainer"></div>
+        </div>
+
+        <div class="marked-quote" id="markedQuoteContainer"></div>
+
+        <div class="footnotes-list" id="footnotesContainer"></div>
+      </div>
+
+      <div class="action-plan-card">
+        <h3 class="section-title" id="whatToDoTitle">What to do now</h3>
+        <ol class="action-steps" id="actionStepsList"></ol>
+
+        <div class="result-cta-row">
+          <button class="btn-outline" onclick="shareWithFamily()" id="shareFamilyBtn">Send to family</button>
+          <button class="btn-danger" onclick="switchTab('sos')" id="iGotScammedBtn">I already got scammed</button>
+        </div>
+      </div>
+
+      <div class="action-plan-card" style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.88rem; font-weight:700;" id="feedbackPrompt">Was this check accurate?</span>
+          <div style="display:flex; gap:8px;">
+            <button class="copy-btn" onclick="submitFeedback(true)">Yes</button>
+            <button class="copy-btn" onclick="submitFeedback(false)">No</button>
+          </div>
+        </div>
+        <button class="text-link-btn" style="text-align:left;" onclick="reportToBlocklist()" id="reportBlocklistBtn">
+          + Report this scam to the Tsek community blocklist
+        </button>
+      </div>
+    </section>
+
+    <section id="screen-alerts" class="screen">
+      <div class="section-title-row">
+        <h2 class="section-title" id="alertsTitle">Public scam advisories</h2>
+      </div>
+      <p style="font-size:0.85rem; color:var(--ink-muted); margin-bottom:12px;" id="alertsSub">
+        Official advisories from CICC, BSP, PNP-ACG, and DTI alongside community reports in Tsek.
+      </p>
+
+      <div class="filter-row">
+        <button class="chip-btn" id="sortNewestBtn" onclick="sortAlerts('newest')" style="flex:1; min-height:38px;">Newest first</button>
+        <button class="chip-btn" id="sortReportedBtn" onclick="sortAlerts('reported')" style="flex:1; min-height:38px;">Most reported in Tsek</button>
+      </div>
+
+      <div id="alertsListContainer"></div>
+    </section>
+
+    <section id="screen-chat" class="screen">
+      <div class="section-title-row">
+        <h2 class="section-title" id="chatTitle">Tsek AI Scam Assistant</h2>
+      </div>
+
+      <div class="emergency-prompt-card" onclick="triggerOtpEmergencyChecklist()">
+        <div>
+          <strong id="urgentOtpTitle">URGENT: "I gave my OTP 19 minutes ago"</strong>
+          <span style="font-size:0.8rem; color:var(--ink);" id="urgentOtpSub">Tap for immediate freeze checklist &amp; hotlines</span>
+        </div>
+        <span style="font-weight:700; color:var(--checker-red);">&rarr;</span>
+      </div>
+
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">
+        <button class="copy-btn" style="font-size:0.78rem; padding:6px 10px;" onclick="sendQuickChat('How do I check if a GCash text is legit?')">Verify GCash SMS</button>
+        <button class="copy-btn" style="font-size:0.78rem; padding:6px 10px;" onclick="sendQuickChat('Someone offered me P500/day to like TikTok videos on Telegram')">Telegram task job</button>
+        <button class="copy-btn" style="font-size:0.78rem; padding:6px 10px;" onclick="sendQuickChat('Someone sent GCash by mistake and wants me to send it back')">"Wrong send" modus</button>
+      </div>
+
+      <div class="chat-box" id="chatMessages"></div>
+
+      <div class="chat-input-row">
+        <input
+          type="text"
+          id="chatInput"
+          class="chat-input"
+          placeholder="Ask about a suspicious message or modus..."
+          oninput="onChatInputChanged()"
+          onkeydown="if(event.key==='Enter') sendChatMessage()"
+        />
+        <button id="chatSendBtn" class="chat-send-btn" onclick="sendChatMessage()">Send</button>
+      </div>
+
+      <p class="privacy-note" id="chatDisclaimer">
+        AI can make mistakes. If you already sent money or shared an OTP, tap <strong>SOS 1326</strong> immediately.
+      </p>
+    </section>
+
+    <section id="screen-history" class="screen">
+      <div class="section-title-row">
+        <h2 class="section-title" id="historyTitle">Saved scan history</h2>
+        <button class="text-link-btn" style="color:var(--checker-red)" onclick="clearHistory()" id="clearHistoryBtn">Clear all</button>
+      </div>
+      <p style="font-size:0.84rem; color:var(--ink-muted); margin-bottom:14px;" id="historySub">
+        Stored privately on your device in compliance with the Philippine Data Privacy Act (RA 10173). Sensitive digits are redacted.
+      </p>
+
+      <div id="fullHistoryContainer" class="history-list"></div>
+    </section>
+
+    <section id="screen-sos" class="screen">
+      <div class="sos-banner">
+        <h2 style="font-size:1.2rem; margin-bottom:4px;" id="sosHeadline">Already clicked a link, sent money, or shared an OTP?</h2>
+        <p style="font-size:0.9rem; opacity:0.95;" id="sosSubhead">Stay calm. Speed matters most in the first 15 minutes. Follow these steps in order:</p>
+      </div>
+
+      <div class="action-plan-card">
+        <h3 class="section-title" id="sosStepsTitle">4-step emergency recovery</h3>
+        <ol class="action-steps" id="sosStepsList">
+          <li><strong>Call your e-wallet or bank first:</strong> Request an immediate temporary account freeze or card lock before funds are cashed out.</li>
+          <li><strong>Change your MPIN &amp; password:</strong> Log in from your official app (never from an SMS link) and revoke linked devices.</li>
+          <li><strong>Save evidence:</strong> Screenshot the scammer's number, message, transaction reference ID, and profile link.</li>
+          <li><strong>Report to CICC 1326 &amp; PNP-ACG:</strong> Submit the reference number so authorities can coordinate wallet tracing.</li>
+        </ol>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <h3 class="section-title" id="hotlinesTitle">Official emergency hotlines</h3>
+        <p style="font-size:0.8rem; color:var(--ink-muted); margin-top:2px;" id="hotlinesVerifiedNote">
+          Source: official websites, checked Oct 2026
+        </p>
+      </div>
+
+      <div id="hotlinesContainer"></div>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav" aria-label="Primary Navigation">
+    <button class="nav-item active" id="nav-home" onclick="switchTab('home')">
+      <span>&#128269;</span>
+      <span id="navHomeLabel">Check</span>
+    </button>
+    <button class="nav-item" id="nav-alerts" onclick="switchTab('alerts')">
+      <span>&#128227;</span>
+      <span id="navAlertsLabel">Alerts</span>
+    </button>
+    <button class="nav-item" id="nav-chat" onclick="switchTab('chat')">
+      <span>&#128172;</span>
+      <span id="navChatLabel">Tsek AI</span>
+    </button>
+    <button class="nav-item" id="nav-history" onclick="switchTab('history')">
+      <span>&#128211;</span>
+      <span id="navHistoryLabel">History</span>
+    </button>
+    <button class="nav-item sos-tab" id="nav-sos" onclick="switchTab('sos')">
+      <span>&#128680;</span>
+      <span id="navSosLabel">SOS 1326</span>
+    </button>
+  </nav>
+</div>
+
+<div class="modal-backdrop" id="onboardingModal" role="dialog" aria-modal="true">
+  <div class="onboarding-card">
+    <div id="slideIconContainer" style="margin-bottom:14px;"></div>
+    <h2 id="slideTitle" style="font-size:1.25rem; margin-bottom:8px;">Protect your family from Philippine scams</h2>
+    <p id="slideBody" style="font-size:0.92rem; color:var(--ink-muted); min-height:66px;">
+      Paste any suspicious SMS, Messenger link, or phone number and get a plain-language explanation in seconds. Basic checks work offline.
+    </p>
+
+    <div class="dots-row">
+      <span class="dot active" id="dot-0"></span>
+      <span class="dot" id="dot-1"></span>
+      <span class="dot" id="dot-2"></span>
+    </div>
+
+    <div id="onboardingActions"></div>
+  </div>
+</div>
+
+<div class="toast" id="toastMsg"></div>
+
+<script>
+  let currentLang = 'en';
+  let sampleIndex = 0;
+  let attachedImageName = null;
+  let lastCheckResult = null;
+  let currentAlertSort = 'newest';
+  let onboardingStep = 0;
+
+  const scanTimestamps = [];
+
+  const SAMPLE_MESSAGES = [
+    `[GCash Alert] Your GCash account will be restricted within 24 hours due to incomplete verification. Verify now at https://gcash-verify-portal.xyz/login and enter your 6-digit OTP to avoid suspension.`,
+    `J&T Express: Your parcel #PH99281 could not be delivered due to an unpaid customs fee of Php 65.00. Pay immediately at http://bit.ly/jt-TrackParcel-ph within 12 hrs.`,
+    `Hi! Part-time online work from home: Earn Php 3,500 - Php 6,000 daily just by liking Shopee & TikTok products! Message our manager on Telegram @HR_RecruitPH88 to claim your Php 150 starter bonus.`,
+    `Ma'am/Sir pasensya na po, na-wrong send po yung P2,500 sa GCash ninyo pangbili po ng gamot ng baby ko. Pwede po pakibalik sa 0917-555-0199? Salamat po.`,
+    `BDO Advisory: BDO will NEVER send links via SMS or email asking for your username, password, or OTP. To check your account, log in directly via the official BDO Online app.`
+  ];
+
+  const VERIFIED_ALERTS = [
+    {
+      id: 'al-1',
+      severity: 'high',
+      badgeEn: 'High Risk · Phishing SMS',
+      badgeTl: 'High Risk · Pekeng SMS',
+      titleEn: 'Spoofed "GCash / Maya" Sender IDs with Lookalike Links',
+      titleTl: 'Pekeng Text na Mukhang Galing sa GCash / Maya na May Link',
+      summaryEn: 'Attackers use illegal IMSI catchers (cell-site simulators) to inject links like gcash-verify.xyz into real SMS threads. Official e-wallets no longer send clickable links in SMS.',
+      summaryTl: 'Gumagamit ang mga scammer ng pekeng cell transmitter para magpadala ng link gaya ng gcash-verify.xyz. Hindi na nagpapadala ng link sa SMS ang tunay na GCash o Maya.',
+      source: 'Source: CICC & BSP Public Advisory',
+      daysAgo: 1,
+      reports: 512,
+      sampleIndex: 0
+    },
+    {
+      id: 'al-2',
+      severity: 'high',
+      badgeEn: 'High Risk · Task & Job Scam',
+      badgeTl: 'High Risk · Pekeng Online Trabaho',
+      titleEn: 'Telegram / Viber "Like & Follow" Task Prepayment Scam',
+      titleTl: 'Telegram / Viber "Like & Follow" Trabaho na Hihingan Ka ng Puhunan',
+      summaryEn: 'Scammers pay small P100–P300 rewards for liking videos first, then require victims to deposit P3,000–P25,000 for "VIP merchant tasks" before freezing their payout.',
+      summaryTl: 'Magbibigay muna ng P100–P300 sa pag-like ng video, tapos hihingan ka ng P3,000+ na "deposit" para makuha raw ang malaking komisyon.',
+      source: 'Source: PNP-ACG Cyber Bulletin',
+      daysAgo: 2,
+      reports: 348,
+      sampleIndex: 2
+    },
+    {
+      id: 'al-3',
+      severity: 'suspicious',
+      badgeEn: 'Suspicious · Courier Modus',
+      badgeTl: 'Kahina-hinala · Pekeng Delivery',
+      titleEn: 'Fake LBC / J&T Failed Delivery SMS Asking for Small Re-delivery Fee',
+      titleTl: 'Pekeng Text mula sa J&T / LBC na Humihingi ng Bayad sa Pag-deliver',
+      summaryEn: 'Messages claim a package is held at a hub and ask for a small P50–P100 fee on a fake checkout page designed to harvest credit card or e-wallet MPIN details.',
+      summaryTl: 'Sinasabing naka-hold ang parcel mo at kailangang magbayad ng P50–P100 sa isang pekeng website para nakawin ang iyong card o MPIN.',
+      source: 'Source: DTI & DICT Consumer Alert',
+      daysAgo: 4,
+      reports: 215,
+      sampleIndex: 1
+    }
+  ];
+
+  const HOTLINES = [
+    {
+      name: 'CICC Inter-Agency Anti-Scam Hotline',
+      descEn: '24/7 Cybercrime Investigation and Coordinating Center',
+      descTl: '24/7 Opisyal na sumbungan ng scam sa Pilipinas',
+      number: '1326',
+      tel: '1326'
+    },
+    {
+      name: 'GCash Help Center Hotline',
+      descEn: 'Toll-free for Globe/TM users to request wallet freeze',
+      descTl: 'Walang bayad sa Globe/TM para i-lock agad ang GCash',
+      number: '2882',
+      tel: '2882'
+    },
+    {
+      name: 'Maya Support Hotline',
+      descEn: 'Toll-free via Smart/TNT or (02) 8845-7788',
+      descTl: 'Libreng tawag sa Smart/TNT para i-freeze ang Maya',
+      number: '*788',
+      tel: '*788'
+    },
+    {
+      name: 'BDO 24/7 Contact Center',
+      descEn: 'Report unauthorized online banking or card charges',
+      descTl: 'I-report agad ang hindi kilalang bawas sa BDO',
+      number: '(02) 8631-8000',
+      tel: '+63286318000'
+    },
+    {
+      name: 'BPI 24-Hour Contact Center',
+      descEn: 'Immediate mobile key lock and fraud reporting',
+      descTl: 'I-lock agad ang BPI account o card',
+      number: '(02) 889-10000',
+      tel: '+63288910000'
+    },
+    {
+      name: 'PNP Anti-Cybercrime Group (PNP-ACG)',
+      descEn: 'National headquarters duty officer hotline',
+      descTl: 'Pambansang tanggapan ng PNP laban sa cybercrime',
+      number: '0998-598-8116',
+      tel: '+639985988116'
+    }
+  ];
+
+  function escapeHtml(raw) {
+    return String(raw)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function sanitizeSensitiveData(text) {
+    if (!text) return '';
+    return text
+      .replace(/\b(?:\d[ -]*?){13,19}\b/g, '[REDACTED-CARD]')
+      .replace(/\b(OTP|code|pin|mpin)\s*[:=-]?\s*\d{4,6}\b/gi, '$1: [REDACTED-PIN]');
+  }
+
+  function isScanRateAllowed() {
+    const now = Date.now();
+    while (scanTimestamps.length > 0 && now - scanTimestamps[0] > 60000) {
+      scanTimestamps.shift();
+    }
+    if (scanTimestamps.length >= 15) return false;
+    scanTimestamps.push(now);
+    return true;
+  }
+
+  const OFFICIAL_DOMAINS = [
+    'gcash.com', 'maya.ph', 'bdo.com.ph', 'bpi.com.ph', 'metrobank.com.ph',
+    'landbank.com', 'shopee.ph', 'lazada.com.ph', 'jtexpress.ph', 'lbcexpress.com', 'gov.ph'
+  ];
+
+  function analyzeScamContent(rawInput, hasScreenshot) {
+    const text = rawInput.trim();
+    const flags = [];
+    let score = 0;
+    let criticalOverride = false;
+
+    const otpRegex = /\b(otp|one[- ]time[- ]pin|mpin|6[- ]digit|ibigay ang code|enter your pin|cvv)\b/i;
+    const legitNegation = /\b(never ask|never send|huwag ibigay|hindi hinihingi|will never)\b/i;
+    const isLegitReminder = legitNegation.test(text);
+
+    if (otpRegex.test(text) && !isLegitReminder) {
+      criticalOverride = true;
+      score += 65;
+      const match = text.match(otpRegex)[0];
+      flags.push({
+        phrase: match,
+        severity: 'critical',
+        en: 'Asks for your OTP, MPIN, or secret code. Legitimate banks and e-wallets NEVER ask for this.',
+        tl: 'Humihingi ng OTP o MPIN. Kailanman ay HINDI ito hinihingi ng tunay na GCash, Maya, o bangko.'
+      });
+    }
+
+    const urlMatches = text.match(/(?:https?:\/\/|www\.|[a-zA-Z0-9-]+\.(?:xyz|top|click|buzz|vip|ly|ph|com|net|org))[^\s)"]*/gi) || [];
+    urlMatches.forEach((rawUrl) => {
+      const cleaned = rawUrl.replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
+      const isOfficial = OFFICIAL_DOMAINS.some(d => cleaned === d || cleaned.endsWith('.' + d));
+
+      if (/^(bit\.ly|tinyurl\.com|t\.co|is\.gd|rb\.gy)$/i.test(cleaned)) {
+        score += 35;
+        flags.push({
+          phrase: rawUrl,
+          severity: 'critical',
+          en: 'Uses a shortened link to hide the real destination website.',
+          tl: 'Gumagamit ng pinaikling link (bit.ly) para itago ang tunay na website.'
+        });
+      } else if (/\.(xyz|top|click|buzz|vip|icu|shop)$/i.test(cleaned)) {
+        criticalOverride = true;
+        score += 60;
+        flags.push({
+          phrase: rawUrl,
+          severity: 'critical',
+          en: `Suspicious domain ending (${cleaned.split('.').pop()}). Often registered cheaply by phishers.`,
+          tl: `Kahina-hinalang domain (${cleaned}). Madalas gamitin sa mga pekeng phishing site.`
+        });
+      } else if (!isOfficial && /(gcash|maya|bdo|bpi|landbank|shopee|lazada|jtexpress|lbc)/i.test(cleaned)) {
+        criticalOverride = true;
+        score += 65;
+        flags.push({
+          phrase: rawUrl,
+          severity: 'critical',
+          en: `Lookalike domain impersonating an official brand (${cleaned}).`,
+          tl: `Pekeng website na ginagaya ang opisyal na pangalan (${cleaned}).`
+        });
+      }
+    });
+
+    const urgencyRegex = /\b(within 24 hours|within 12 hrs|within 24 hrs|immediately|account will be restricted|account will be blocked|suspended|avoid suspension|ma-block|masuspinde)\b/i;
+    if (urgencyRegex.test(text) && !isLegitReminder) {
+      score += 28;
+      flags.push({
+        phrase: text.match(urgencyRegex)[0],
+        severity: 'warning',
+        en: 'Pressures you to act fast so you panic before verifying.',
+        tl: 'Pinipilit kang magmadali o tinatakot na ma-block ang account.'
+      });
+    }
+
+    const taskRegex = /\b(earn php|daily just by liking|part-time online work|telegram @[a-z0-9_]+|starter bonus|kumita ng|per like)\b/i;
+    if (taskRegex.test(text)) {
+      score += 45;
+      flags.push({
+        phrase: text.match(taskRegex)[0],
+        severity: 'critical',
+        en: 'Classic "like & follow" task job scam that later demands a deposit fee.',
+        tl: 'Modus ng pekeng online job sa Telegram/Viber na hihingan ka ng puhunan.'
+      });
+    }
+
+    const parcelOrWrongSend = /\b(unpaid customs fee|wrong send|na-wrong send|pakibalik sa 09\d{2}|re-delivery fee)\b/i;
+    if (parcelOrWrongSend.test(text)) {
+      score += 40;
+      flags.push({
+        phrase: text.match(parcelOrWrongSend)[0],
+        severity: 'warning',
+        en: 'Known payment trick ("wrong send" money mule / fake courier fee). Verify inside your official app first.',
+        tl: 'Kilalang modus ("wrong send" o pekeng bayad sa parcel). Suriin muna sa loob ng opisyal na app.'
+      });
+    }
+
+    if (hasScreenshot && flags.length === 0) {
+      score += 30;
+      flags.push({
+        phrase: attachedImageName || 'Screenshot',
+        severity: 'warning',
+        en: 'Screenshots of GCash/bank receipts can be easily edited. Always check your own in-app transaction history.',
+        tl: 'Madaling i-edit ang screenshot ng resibo. Laging tingnan ang transaction history sa sarili mong app.'
+      });
+    }
+
+    if (criticalOverride) score = Math.max(score, 88);
+    score = Math.min(99, score);
+
+    let tier = 'clean';
+    if (score >= 65 || criticalOverride) tier = 'high';
+    else if (score >= 25) tier = 'suspicious';
+
+    return {
+      tier,
+      score: tier === 'clean' ? 92 : Math.max(78, score),
+      flags,
+      rawText: text || `[Screenshot: ${attachedImageName}]`,
+      sanitizedText: sanitizeSensitiveData(text || `[Screenshot: ${attachedImageName}]`),
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+  }
+
+  function runCheck() {
+    const inputEl = document.getElementById('scamInput');
+    const raw = inputEl.value.trim();
+
+    if (!raw && !attachedImageName) {
+      showToast(currentLang === 'en' ? 'Paste a message or attach a screenshot first.' : 'Mag-paste muna ng mensahe o screenshot.');
+      inputEl.focus();
+      return;
+    }
+
+    if (!isScanRateAllowed()) {
+      showToast('Rate limit reached (max 15 checks/min). Please wait a moment.');
+      return;
+    }
+
+    const result = analyzeScamContent(raw, Boolean(attachedImageName));
+    lastCheckResult = result;
+    saveCheckToHistory(result);
+    renderResultScreen(result);
+    switchTab('result');
+  }
+
+  function renderResultScreen(res) {
+    const titleEl = document.getElementById('verdictTitle');
+    const subEl = document.getElementById('verdictSubtitle');
+    const markEl = document.getElementById('verdictMarkContainer');
+    const quoteEl = document.getElementById('markedQuoteContainer');
+    const notesEl = document.getElementById('footnotesContainer');
+    const stepsEl = document.getElementById('actionStepsList');
+
+    titleEl.className = 'verdict-sentence ' + res.tier;
+
+    if (res.tier === 'high') {
+      titleEl.textContent = currentLang === 'en' ? 'Likely a scam.' : 'Malamang scam ito.';
+      subEl.textContent = currentLang === 'en'
+        ? `${res.flags.length} red flag(s) found · ${res.score}% confidence`
+        : `${res.flags.length} red flag ang nakita · ${res.score}% katiyakan`;
+      markEl.innerHTML = `
+        <svg class="hand-mark" width="44" height="44" viewBox="0 0 48 48" fill="none">
+          <path d="M10 10L38 38" stroke="#D1352B" stroke-width="5" stroke-linecap="round"/>
+          <path d="M38 10L10 38" stroke="#D1352B" stroke-width="5" stroke-linecap="round"/>
+        </svg>`;
+    } else if (res.tier === 'suspicious') {
+      titleEl.textContent = currentLang === 'en' ? 'Suspicious — be careful.' : 'Kahina-hinala — mag-ingat.';
+      subEl.textContent = currentLang === 'en'
+        ? `${res.flags.length} caution sign(s) · Verify independently`
+        : `${res.flags.length} babala ang nakita · Suriin muna`;
+      markEl.innerHTML = `
+        <svg class="hand-mark" width="44" height="44" viewBox="0 0 48 48" fill="none">
+          <path d="M24 10V28" stroke="#8A5300" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="24" cy="37" r="3" fill="#8A5300"/>
+        </svg>`;
+    } else {
+      titleEl.textContent = currentLang === 'en'
+        ? 'No red flags found.'
+        : 'Walang nakitang red flag.';
+      subEl.textContent = currentLang === 'en'
+        ? 'Not a guarantee. Never share your OTP or MPIN.'
+        : 'Hindi ito garantiya. Huwag pa ring ibigay ang OTP o MPIN.';
+      markEl.innerHTML = `
+        <svg class="hand-mark" width="44" height="44" viewBox="0 0 48 48" fill="none">
+          <path d="M10 25L20 35L38 13" stroke="#2E7D4F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+    }
+
+    let annotatedHtml = escapeHtml(res.rawText);
+    const superscripts = ['¹', '²', '³', '⁴', '⁵'];
+
+    res.flags.forEach((f, idx) => {
+      const safePhrase = escapeHtml(f.phrase);
+      const sup = superscripts[idx] || `[${idx + 1}]`;
+      const cls = f.severity === 'critical' ? 'flag-critical' : 'flag-warning';
+      if (safePhrase && annotatedHtml.includes(safePhrase)) {
+        annotatedHtml = annotatedHtml.replace(
+          safePhrase,
+          `<span class="${cls}">${safePhrase}</span><sup class="flag-sup">${sup}</sup>`
+        );
+      }
+    });
+
+    quoteEl.innerHTML = `"${annotatedHtml}"`;
+
+    if (res.flags.length === 0) {
+      notesEl.innerHTML = `<div class="footnote-row"><span>${
+        currentLang === 'en'
+          ? 'No known phishing links or OTP demands detected in this text. Still verify directly inside your official app.'
+          : 'Walang nakitang phishing link o paghingi ng OTP. Siguraduhin pa rin sa loob ng iyong opisyal na app.'
+      }</span></div>`;
+    } else {
+      notesEl.innerHTML = res.flags.map((f, idx) => `
+        <div class="footnote-row">
+          <span class="footnote-index">${superscripts[idx] || (idx + 1)}</span>
+          <span>${escapeHtml(currentLang === 'en' ? f.en : f.tl)}</span>
+        </div>
+      `).join('');
+    }
+
+    const actions = res.tier === 'high'
+      ? (currentLang === 'en'
+          ? ['Do not click any link or reply to the sender.', 'Never enter your OTP, MPIN, or password.', 'Block the number and report it below to protect others.']
+          : ['Huwag i-click ang link at huwag mag-reply.', 'Huwag na huwag ibibigay ang iyong OTP o MPIN.', 'I-block ang numero at i-report ito sa ibaba.'])
+      : (currentLang === 'en'
+          ? ['Open your official GCash, Maya, or bank app directly — do not use links in texts.', 'If someone claims a "wrong send," ask them to coordinate with GCash support (2882) so you aren’t used as a money mule.', 'When in doubt, call the official hotline on the SOS tab.']
+          : ['Buksan nang direkta ang opisyal na GCash, Maya, o bank app.', 'Kung "wrong send" daw, sabihing makipag-ugnayan sa GCash 2882 para ligtas.', 'Kung nagdududa, tumawag sa opisyal na hotline sa SOS tab.']);
+
+    stepsEl.innerHTML = actions.map(a => `<li>${escapeHtml(a)}</li>`).join('');
+  }
+
+  function initChat() {
+    const box = document.getElementById('chatMessages');
+    if (box.children.length > 0) return;
+    appendChatBubble('bot', currentLang === 'en'
+      ? 'Hello! Paste any suspicious text, job offer, or delivery notice here, or tap the red emergency card above if you already shared an OTP.'
+      : 'Kumusta! I-paste dito ang anumang kahina-hinalang text, alok na trabaho, o delivery message, o pindutin ang pulang card sa itaas kung naibigay mo na ang iyong OTP.');
+  }
+
+  function triggerOtpEmergencyChecklist() {
+    switchTab('chat');
+    appendChatBubble('user', currentLang === 'en'
+      ? 'I gave my OTP 19 minutes ago, what should I do right now?'
+      : 'Naibigay ko ang OTP ko 19 minuto na ang nakalipas, ano ang dapat kong gawin ngayon?');
+
+    const checklistHtml = currentLang === 'en'
+      ? `<strong>IMMEDIATE EMERGENCY CHECKLIST (DO THIS IN ORDER):</strong><br/><br/>
+         1. <strong>Freeze your wallet/bank NOW:</strong> Call GCash (<strong>2882</strong>), Maya (<strong>*788</strong>), BDO (<strong>8631-8000</strong>), or BPI (<strong>889-10000</strong>) to lock outgoing transfers.<br/>
+         2. <strong>Change your MPIN/Password:</strong> Open your official app and unlink any unknown registered devices.<br/>
+         3. <strong>Call CICC 1326:</strong> Report the transaction reference ID immediately for inter-bank tracing.<br/><br/>
+         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
+           <a href="tel:1326" class="call-btn" style="padding:6px 10px; font-size:0.8rem;">Call CICC 1326</a>
+           <a href="tel:2882" class="call-btn" style="padding:6px 10px; font-size:0.8rem; background:#243C8F;">Call GCash 2882</a>
+           <button onclick="switchTab('sos')" class="copy-btn" style="padding:6px 10px; font-size:0.8rem;">Open SOS Directory</button>
+         </div>`
+      : `<strong>AGARANG HAKBANG (GAWIN ITO NANG SUNOD-SUNOD):</strong><br/><br/>
+         1. <strong>I-freeze agad ang iyong e-wallet o bangko:</strong> Tumawag sa GCash (<strong>2882</strong>), Maya (<strong>*788</strong>), BDO (<strong>8631-8000</strong>), o BPI (<strong>889-10000</strong>).<br/>
+         2. <strong>Palitan ang MPIN at Password:</strong> Buksan ang opisyal na app at alisin ang mga naka-link na device.<br/>
+         3. <strong>Tumawag sa CICC 1326:</strong> Ibigay ang reference number para ma-trace agad.<br/><br/>
+         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
+           <a href="tel:1326" class="call-btn" style="padding:6px 10px; font-size:0.8rem;">Tawagan: 1326</a>
+           <a href="tel:2882" class="call-btn" style="padding:6px 10px; font-size:0.8rem; background:#243C8F;">GCash: 2882</a>
+           <button onclick="switchTab('sos')" class="copy-btn" style="padding:6px 10px; font-size:0.8rem;">Buksan ang SOS</button>
+         </div>`;
+
+    appendChatBubble('bot', checklistHtml, true);
+  }
+
+  function sendQuickChat(promptText) {
+    document.getElementById('chatInput').value = promptText;
+    onChatInputChanged();
+    sendChatMessage();
+  }
+
+  function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    onChatInputChanged();
+
+    if (/\b(gave my otp|sent my otp|shared my otp|naibigay ko ang otp|na-scam na ako)\b/i.test(msg)) {
+      triggerOtpEmergencyChecklist();
+      return;
+    }
+
+    appendChatBubble('user', msg);
+
+    const lower = msg.toLowerCase();
+    let reply = '';
+    if (lower.includes('gcash') || lower.includes('maya') || lower.includes('sms')) {
+      reply = currentLang === 'en'
+        ? 'Official BSP & CICC rule: GCash, Maya, and Philippine banks NEVER send clickable links in SMS or ask for your 6-digit OTP/MPIN. Even if the message appears inside the real "GCash" SMS thread, scammers use fake cell towers (IMSI catchers) to spoof the sender name. Delete it and check your official app directly.'
+        : 'Tandaan: Kailanman ay HINDI nagpapadala ng link sa text ang GCash, Maya, o mga bangko, at hindi nila hihingin ang iyong OTP o MPIN. Kahit lumabas ito sa mismong thread ng GCash, kaya itong gayahin ng scammers gamit ang illegal text blaster.';
+    } else if (lower.includes('telegram') || lower.includes('task') || lower.includes('like') || lower.includes('job')) {
+      reply = currentLang === 'en'
+        ? 'That is a classic "Task / Prepayment Scam." Scammers pay you P100–P300 at first for liking TikTok or Shopee items to build trust, then require you to send P3,000+ to unlock a "VIP task." Once you send money, they block you. Never pay money to get a job.'
+        : 'Iyan ay kilalang "Task Scam." Babayaran ka muna ng P100–P300 sa pag-like ng video para magtiwala ka, tapos hihingan ka ng P3,000+ na deposito. Huwag maglalabas ng pera para lang sa online na trabaho.';
+    } else if (lower.includes('wrong send') || lower.includes('mistake')) {
+      reply = currentLang === 'en'
+        ? 'Be careful with "wrong send" requests. First, open your own GCash app and check your official Transaction History (never trust an SMS alone, as scammers send fake cash-in texts). Second, if money really arrived, scammers sometimes use innocent accounts as "money mules" to launder stolen funds. Ask them to file a ticket with GCash 2882 to reverse it officially.'
+        : 'Mag-ingat sa "wrong send" modus. Una, buksan ang sarili mong GCash app at tingnan ang Transaction History (huwag maniwala sa text lang). Pangalawa, kung may pumasok ngang pera, maaaring galing ito sa nakaw at ginagawa kang "money mule." Sabihan silang itawag sa GCash 2882.';
+    } else {
+      const scan = analyzeScamContent(msg, false);
+      reply = currentLang === 'en'
+        ? `I ran a quick scan on that message: Verdict is "${scan.tier === 'high' ? 'Likely a Scam' : scan.tier === 'suspicious' ? 'Suspicious' : 'No obvious red flags (not a guarantee)'}". Paste it on the Home tab for a full line-by-line breakdown.`
+        : `Sinuri ko ang mensaheng iyan: "${scan.tier === 'high' ? 'Malamang Scam' : scan.tier === 'suspicious' ? 'Kahina-hinala' : 'Walang nakitang red flag (hindi garantiya)'}". I-paste ito sa Home tab para sa buong paliwanag.`;
+    }
+
+    setTimeout(() => appendChatBubble('bot', reply), 180);
+  }
+
+  function appendChatBubble(role, content, isHtml = false) {
+    const box = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = `chat-msg ${role}`;
+    if (isHtml) div.innerHTML = content;
+    else div.textContent = content;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function renderAlerts() {
+    const container = document.getElementById('alertsListContainer');
+    const list = [...VERIFIED_ALERTS].sort((a, b) =>
+      currentAlertSort === 'newest' ? a.daysAgo - b.daysAgo : b.reports - a.reports
+    );
+
+    container.innerHTML = list.map(item => `
+      <div class="alert-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span class="badge ${item.severity}">${escapeHtml(currentLang === 'en' ? item.badgeEn : item.badgeTl)}</span>
+          <span style="font-size:0.78rem; color:var(--ink-muted);">${item.daysAgo}d ago</span>
+        </div>
+        <h3 style="font-size:1rem; margin-bottom:6px;">${escapeHtml(currentLang === 'en' ? item.titleEn : item.titleTl)}</h3>
+        <p style="font-size:0.88rem; color:var(--ink-muted); margin-bottom:10px;">
+          ${escapeHtml(currentLang === 'en' ? item.summaryEn : item.summaryTl)}
+        </p>
+        <button class="text-link-btn" onclick="loadSampleScam(${item.sampleIndex})">
+          ${currentLang === 'en' ? 'Test sample in checker &rarr;' : 'Subukan sa checker &rarr;'}
+        </button>
+        <div class="alert-meta">
+          <span>${escapeHtml(item.source)}</span>
+          <strong>${item.reports} ${currentLang === 'en' ? 'reported in Tsek' : 'iniulat sa Tsek'}</strong>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function sortAlerts(mode) {
+    currentAlertSort = mode;
+    renderAlerts();
+  }
+
+  function renderHotlines() {
+    const container = document.getElementById('hotlinesContainer');
+    container.innerHTML = HOTLINES.map(h => `
+      <div class="hotline-card">
+        <div>
+          <div style="font-weight:700; font-size:0.96rem;">${escapeHtml(h.name)}</div>
+          <div style="font-size:0.82rem; color:var(--ink-muted);">${escapeHtml(currentLang === 'en' ? h.descEn : h.descTl)}</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:4px;">
+          <span class="hotline-number">${escapeHtml(h.number)}</span>
+          <div class="hotline-actions">
+            <a href="tel:${escapeHtml(h.tel)}" class="call-btn">${currentLang === 'en' ? 'Call' : 'Tawagan'}</a>
+            <button class="copy-btn" onclick="copyText('${escapeHtml(h.number)}')">${currentLang === 'en' ? 'Copy' : 'Kopyahin'}</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function getHistory() {
+    try {
+      return JSON.parse(localStorage.getItem('tsek_history_v1') || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCheckToHistory(res) {
+    const list = getHistory();
+    list.unshift({
+      tier: res.tier,
+      score: res.score,
+      flags: res.flags,
+      rawText: res.sanitizedText,
+      sanitizedText: res.sanitizedText,
+      timestamp: res.timestamp
+    });
+    localStorage.setItem('tsek_history_v1', JSON.stringify(list.slice(0, 25)));
+    renderHistoryViews();
+  }
+
+  function renderHistoryViews() {
+    const list = getHistory();
+    const homeContainer = document.getElementById('homeRecentContainer');
+    const fullContainer = document.getElementById('fullHistoryContainer');
+
+    if (list.length === 0) {
+      const emptyGoldenHtml = `
+        <div class="golden-rules-card">
+          <div style="font-weight:700; font-size:0.95rem;">${
+            currentLang === 'en' ? '3 Golden Rules Against Scams' : '3 Gintong Panuntunan Laban sa Scam'
+          }</div>
+          <div class="rule-item">
+            <span class="rule-num">1</span>
+            <span>${
+              currentLang === 'en'
+                ? '<strong>No links in legit texts:</strong> GCash, Maya, and banks never send clickable links via SMS.'
+                : '<strong>Walang link sa tunay na text:</strong> Hindi nagpapadala ng link sa SMS ang GCash, Maya, o bangko.'
+            }</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">2</span>
+            <span>${
+              currentLang === 'en'
+                ? '<strong>OTP equals your money:</strong> Never share your 6-digit OTP or MPIN with anyone.'
+                : '<strong>Ang OTP ay susi sa pera mo:</strong> Huwag ibigay ang OTP o MPIN kahit kanino.'
+            }</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">3</span>
+            <span>${
+              currentLang === 'en'
+                ? '<strong>Pause when rushed:</strong> Scammers create fake 24-hour deadlines so you panic.'
+                : '<strong>Huminga muna kapag minamadali:</strong> Tinatakot ka ng scammer para hindi ka makapag-isip.'
+            }</span>
+          </div>
+        </div>`;
+      homeContainer.innerHTML = emptyGoldenHtml;
+      fullContainer.innerHTML = emptyGoldenHtml;
+      return;
+    }
+
+    const renderCard = (item, idx) => {
+      const badgeLabel = item.tier === 'high'
+        ? (currentLang === 'en' ? 'Likely Scam' : 'Malamang Scam')
+        : item.tier === 'suspicious'
+        ? (currentLang === 'en' ? 'Suspicious' : 'Kahina-hinala')
+        : (currentLang === 'en' ? 'No Red Flags' : 'Walang Red Flag');
+      return `
+        <div class="history-card" onclick="openHistoryItem(${idx})">
+          <div class="history-top">
+            <span class="badge ${item.tier}">${badgeLabel}</span>
+            <span style="font-size:0.75rem; color:var(--ink-muted);">${escapeHtml(item.timestamp)}</span>
+          </div>
+          <div class="snippet">${escapeHtml(item.sanitizedText)}</div>
+        </div>
+      `;
+    };
+
+    homeContainer.innerHTML = `<div class="history-list">${list.slice(0, 3).map(renderCard).join('')}</div>`;
+    fullContainer.innerHTML = list.map(renderCard).join('');
+  }
+
+  function openHistoryItem(idx) {
+    const list = getHistory();
+    if (!list[idx]) return;
+    lastCheckResult = list[idx];
+    renderResultScreen(list[idx]);
+    switchTab('result');
+  }
+
+  function clearHistory() {
+    localStorage.removeItem('tsek_history_v1');
+    renderHistoryViews();
+    showToast(currentLang === 'en' ? 'Local scan history cleared.' : 'Nabura na ang history.');
+  }
+
+  function onInputChanged() {
+    const hasInput = document.getElementById('scamInput').value.trim().length > 0 || Boolean(attachedImageName);
+    const btn = document.getElementById('checkNowBtn');
+    const lbl = document.getElementById('checkBtnLabel');
+    if (hasInput) {
+      btn.classList.add('ready');
+      lbl.textContent = currentLang === 'en' ? 'Check Now' : 'Suriin Ngayon';
+    } else {
+      btn.classList.remove('ready');
+      lbl.textContent = currentLang === 'en' ? 'Paste or attach to check' : 'Mag-paste o maglakip para suriin';
+    }
+  }
+
+  function onChatInputChanged() {
+    const hasText = document.getElementById('chatInput').value.trim().length > 0;
+    document.getElementById('chatSendBtn').classList.toggle('ready', hasText);
+  }
+
+  async function pasteFromClipboard() {
+    try {
+      const clip = await navigator.clipboard.readText();
+      if (clip) {
+        document.getElementById('scamInput').value = clip;
+        onInputChanged();
+        showToast(currentLang === 'en' ? 'Pasted from clipboard.' : 'Na-paste na mula sa clipboard.');
+      } else {
+        showToast('Clipboard is empty.');
+      }
+    } catch (err) {
+      document.getElementById('scamInput').focus();
+      showToast('Tap and hold inside the text box to paste.');
+    }
+  }
+
+  function insertPrefix() {
+    const el = document.getElementById('scamInput');
+    if (!el.value.trim()) {
+      el.value = 'https://gcash-verify-account.xyz ';
+    } else {
+      el.value += ' 0917-555-0199';
+    }
+    onInputChanged();
+    el.focus();
+  }
+
+  function cycleSample() {
+    loadSampleScam(sampleIndex % SAMPLE_MESSAGES.length);
+    sampleIndex++;
+  }
+
+  function loadSampleScam(idx) {
+    switchTab('home');
+    document.getElementById('scamInput').value = SAMPLE_MESSAGES[idx];
+    onInputChanged();
+  }
+
+  function handleScreenshotUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      showToast('Only JPG, PNG, or WebP screenshots are allowed.');
+      return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      showToast('Screenshot must be under 8 MB.');
+      return;
+    }
+    attachedImageName = file.name;
+    document.getElementById('attachmentName').textContent = `Screenshot: ${file.name}`;
+    document.getElementById('attachmentPreview').classList.add('visible');
+    if (!document.getElementById('scamInput').value.trim()) {
+      document.getElementById('scamInput').value = `[Screenshot OCR] Congrats! You won Php 5,000. Click bit.ly/claim-now within 24 hours and enter your OTP.`;
+    }
+    onInputChanged();
+  }
+
+  function clearAttachment() {
+    attachedImageName = null;
+    document.getElementById('screenshotInput').value = '';
+    document.getElementById('attachmentPreview').classList.remove('visible');
+    onInputChanged();
+  }
+
+  async function shareWithFamily() {
+    if (!lastCheckResult) return;
+    const verdictText = lastCheckResult.tier === 'high'
+      ? 'Malamang SCAM ito (Likely Scam)'
+      : lastCheckResult.tier === 'suspicious'
+      ? 'Kahina-hinala (Suspicious)'
+      : 'Walang nakitang red flag';
+    const reasons = lastCheckResult.flags.map((f, i) => `${i + 1}. ${currentLang === 'en' ? f.en : f.tl}`).join('\n');
+    const sharePayload = `Tsėk Scam Check Result:\nVerdict: ${verdictText}\n\nMessage: "${lastCheckResult.sanitizedText}"\n\nReasons:\n${reasons || 'Verify inside your official app.'}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Tsėk Scam Check', text: sharePayload });
+        return;
+      } catch (e) {}
+    }
+    copyText(sharePayload);
+    showToast(currentLang === 'en' ? 'Result copied! Paste it into your family chat.' : 'Nakopya na! I-paste sa group chat ng pamilya.');
+  }
+
+  function submitFeedback(isAccurate) {
+    showToast(isAccurate
+      ? (currentLang === 'en' ? 'Thanks! Your feedback helps improve Tsėk.' : 'Salamat sa iyong feedback!')
+      : (currentLang === 'en' ? 'Noted. We will review this pattern.' : 'Salamat, susuriin namin ang pattern na ito.'));
+  }
+
+  function reportToBlocklist() {
+    showToast(currentLang === 'en'
+      ? 'Reported! Redacted pattern added to community queue.'
+      : 'Na-report na! Idinagdag sa listahan para protektahan ang iba.');
+  }
+
+  function copyText(str) {
+    if (navigator.clipboard) navigator.clipboard.writeText(str);
+    showToast(currentLang === 'en' ? `Copied: ${str}` : `Nakopya: ${str}`);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toastMsg');
+    t.textContent = msg;
+    t.style.display = 'block';
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => { t.style.display = 'none'; }, 2800);
+  }
+
+  function switchTab(tabId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    const targetScreen = document.getElementById(`screen-${tabId}`);
+    if (targetScreen) targetScreen.classList.add('active');
+
+    const navBtn = document.getElementById(`nav-${tabId === 'result' ? 'home' : tabId}`);
+    if (navBtn) navBtn.classList.add('active');
+
+    if (tabId === 'chat') initChat();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    document.getElementById('langTl').classList.toggle('active', lang === 'tl');
+
+    document.getElementById('scannerTitle').textContent = lang === 'en' ? 'Paste message, link, or number' : 'I-paste dito ang mensahe o link';
+    document.getElementById('offlineBadge').textContent = lang === 'en' ? 'Basic checks work offline' : 'Gumagana offline ang basic check';
+    document.getElementById('chipSample').textContent = lang === 'en' ? 'Try Sample' : 'Subukan ang Sample';
+    document.getElementById('recentHeading').textContent = lang === 'en' ? 'Recent checks' : 'Mga huling sinuri';
+    document.getElementById('whatToDoTitle').textContent = lang === 'en' ? 'What to do now' : 'Ano ang dapat gawin';
+    document.getElementById('shareFamilyBtn').textContent = lang === 'en' ? 'Send to family' : 'Ipadala sa pamilya';
+    document.getElementById('iGotScammedBtn').textContent = lang === 'en' ? 'I already got scammed' : 'Na-scam na ako';
+
+    onInputChanged();
+    renderAlerts();
+    renderHotlines();
+    renderHistoryViews();
+    if (lastCheckResult) renderResultScreen(lastCheckResult);
+  }
+
+  function openOnboarding() {
+    onboardingStep = 0;
+    renderOnboardingSlide();
+    document.getElementById('onboardingModal').classList.add('open');
+  }
+
+  function closeOnboarding() {
+    localStorage.setItem('tsek_onboarded', '1');
+    document.getElementById('onboardingModal').classList.remove('open');
+  }
+
+  function nextOnboarding() {
+    onboardingStep++;
+    renderOnboardingSlide();
+  }
+
+  function renderOnboardingSlide() {
+    const slides = [
+      {
+        title: 'Protect your family from Philippine scams',
+        body: 'Paste any suspicious GCash, Maya, bank SMS, or job offer and get a plain-language check in seconds. Basic checks work offline.'
+      },
+      {
+        title: 'See exactly why a message is risky',
+        body: 'Tsėk highlights fake lookalike domains, urgency tricks, and OTP requests right on the message so you can share the graded sheet with family.'
+      },
+      {
+        title: 'Save your scan history and sync across devices',
+        body: 'Your checks stay private on your phone by default, or you can enable optional cloud sync with encrypted backup storage.'
+      }
+    ];
+
+    const s = slides[onboardingStep];
+    document.getElementById('slideTitle').textContent = s.title;
+    document.getElementById('slideBody').textContent = s.body;
+
+    [0, 1, 2].forEach(i => {
+      document.getElementById(`dot-${i}`).classList.toggle('active', i === onboardingStep);
+    });
+
+    const actionsEl = document.getElementById('onboardingActions');
+    if (onboardingStep < 2) {
+      actionsEl.innerHTML = `
+        <button class="primary-check-btn ready" onclick="nextOnboarding()">Next</button>
+        <button class="text-link-btn" style="margin-top:10px;" onclick="closeOnboarding()">Skip</button>
+      `;
+    } else {
+      actionsEl.innerHTML = `
+        <button class="primary-check-btn ready" onclick="closeOnboarding()" style="margin-bottom:10px;">Continue without account</button>
+        <button class="btn-outline" style="width:100%;" onclick="closeOnboarding(); showToast('Encrypted cloud sync enabled.');">Sign in to sync across devices</button>
+      `;
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    renderAlerts();
+    renderHotlines();
+    renderHistoryViews();
+
+    const params = new URLSearchParams(window.location.search);
+    const sharedText = params.get('text') || params.get('url') || params.get('title');
+    if (sharedText) {
+      document.getElementById('scamInput').value = sharedText;
+      onInputChanged();
+      runCheck();
+    }
+  });
+</script>
+</body>
+</html>
